@@ -1,139 +1,42 @@
+# 用法
 
-Dubbo采用全Spring配置方式，透明化接入应用，对应用没有任何API侵入，只需用Spring加载Dubbo的配置即可，Dubbo基于Spring的Schema扩展进行加载。
+#### 本地服务 Spring 配置
 
-如果不想使用Spring配置，而希望通过API的方式进行调用（不推荐），请参见：[API配置](../configuration/api.md)
-
-#### 服务提供者
-
-> 完整安装步骤，请参见：[示例提供者安装](../../admin-guide/install-mannual/示例提供者安装.md)
-
-##### 定义服务接口
-
-**DemoService.java**
-
-```java
-package com.alibaba.dubbo.demo;
- 
-public interface DemoService {
- 
-    String sayHello(String name);
- 
-}
-```
-> 该接口需单独打包，在服务提供方和消费方共享
-
-##### 在服务提供方实现接口
-
-**DemoServiceImpl.java**
-
-```java
-
-package com.alibaba.dubbo.demo.provider;
- 
-import com.alibaba.dubbo.demo.DemoService;
- 
-public class DemoServiceImpl implements DemoService {
- 
-    public String sayHello(String name) {
-        return "Hello " + name;
-    }
- 
-}
-```
-> 对服务消费方隐藏实现
-
-##### 用 Spring 配置声明暴露服务
-
-**provider.xml**
+> local.xml
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans        http://www.springframework.org/schema/beans/spring-beans.xsd        http://code.alibabatech.com/schema/dubbo        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+<bean id=“xxxService” class=“com.xxx.XxxServiceImpl” />
  
-    <!-- 提供方应用信息，用于计算依赖关系 -->
-    <dubbo:application name="hello-world-app"  />
- 
-    <!-- 使用multicast广播注册中心暴露服务地址 -->
-    <dubbo:registry address="multicast://224.5.6.7:1234" />
- 
-    <!-- 用dubbo协议在20880端口暴露服务 -->
-    <dubbo:protocol name="dubbo" port="20880" />
- 
-    <!-- 声明需要暴露的服务接口 -->
-    <dubbo:service interface="com.alibaba.dubbo.demo.DemoService" ref="demoService" />
- 
-    <!-- 和本地bean一样实现服务 -->
-    <bean id="demoService" class="com.alibaba.dubbo.demo.provider.DemoServiceImpl" />
- 
-</beans>
+<bean id=“xxxAction” class=“com.xxx.XxxAction”>
+    <property name=“xxxService” ref=“xxxService” />
+</bean>
 ```
 
-##### 加载Spring配置
+#### 远程服务 Spring 配置
 
-**Provider.java**
+在本地服务的基础上，只需做简单配置，即可完成远程化：
 
-```java
-import org.springframework.context.support.ClassPathXmlApplicationContext;
- 
-public class Provider {
-    public static void main(String[] args) throws Exception {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[] {"http://10.20.160.198/wiki/display/dubbo/provider.xml"});
-        context.start();
- 
-        System.in.read(); // 按任意键退出
-    }
-}
-```
+* 将上面的 `local.xml` 配置拆分成两份，将服务定义部分放在服务提供方 `remote-provider.xml`，将服务引用部分放在服务消费方 `remote-consumer.xml`。
+* 并在提供方增加暴露服务配置 `<dubbo:service>`，在消费方增加引用服务配置 `<dubbo:reference>`。
 
-#### 服务消费者
-
-> 完整安装步骤，请参见：[示例消费者安装](../../admin-guide/install-mannual/示例消费者安装.md)
-
-##### 通过Spring配置引用远程服务
-
-**consumer.xml**
+> remote-provider.xml
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans        http://www.springframework.org/schema/beans/spring-beans.xsd        http://code.alibabatech.com/schema/dubbo        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
- 
-    <!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
-    <dubbo:application name="consumer-of-helloworld-app"  />
- 
-    <!-- 使用multicast广播注册中心暴露发现服务地址 -->
-    <dubbo:registry address="multicast://224.5.6.7:1234" />
- 
-    <!-- 生成远程服务代理，可以和本地bean一样使用demoService -->
-    <dubbo:reference id="demoService" interface="com.alibaba.dubbo.demo.DemoService" />
-</beans>
+<!-- 和本地服务一样实现远程服务 -->
+<bean id=“xxxService” class=“com.xxx.XxxServiceImpl” /> 
+
+<!-- 增加暴露远程服务配置 -->
+<dubbo:service interface=“com.xxx.XxxService” ref=“xxxService” /> 
 ```
 
-##### 加载Spring配置，并调用远程服务
+> remote-consumer.xml
 
-**Consumer.java**
+```xml
+<!-- 增加引用远程服务配置 -->
+<dubbo:reference id=“xxxService” interface=“com.xxx.XxxService” />
 
-```java
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import com.alibaba.dubbo.demo.DemoService;
- 
-public class Consumer {
- 
-    public static void main(String[] args) throws Exception {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[] {"http://10.20.160.198/wiki/display/dubbo/consumer.xml"});
-        context.start();
- 
-        DemoService demoService = (DemoService)context.getBean("demoService"); // 获取远程服务代理
-        String hello = demoService.sayHello("world"); // 执行远程方法
- 
-        System.out.println( hello ); // 显示调用结果
-    }
- 
-}
+<!-- 和本地服务一样使用远程服务 -->
+<bean id=“xxxAction” class=“com.xxx.XxxAction”> 
+    <property name=“xxxService” ref=“xxxService” />
+</bean>
 ```
-> 也可以使用IoC注入
