@@ -2,7 +2,7 @@ bui# Summary
 * 1 入门
     * [1.1 背景](./preface/background.md)
     * [1.2 需求](./preface/requirements.md)
-    * [1.3 架构](./preface/architacture.md)
+    * [1.3 架构](./preface/architecture.md)
     * [1.4 用法](./preface/usage.md)
 * 2 快速启动
     * [2.1 依赖](./dependencies.md)
