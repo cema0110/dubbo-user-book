@@ -1,12 +1,10 @@
-> **![warning](../sources/images/warning-3.gif) API使用范围**  
-API仅用于OpenAPI, ESB, Test, Mock等系统集成，普通服务提供方或消费方，请采用配置方式使用Dubbo，请参见：<Xml配置>
+# API 配置
 
-> **![check](../sources/images/check.gif) API属性含义参考**  
-API属性与配置项一对一，各属性含义，请参见：<配置参考手册>，  
-比如：ApplicationConfig.setName("xxx") 对应 <dubbo:application name="xxx" />
+API 属性与配置项一对一，各属性含义，请参见：[配置参考手册](../references/xml/introduction.md)，比如：`ApplicationConfig.setName("xxx")` 对应  `<dubbo:application name="xxx" />` [^1]
 
-#### (1). 服务提供者
-``` java
+## 服务提供者
+
+```java
 import com.alibaba.dubbo.rpc.config.ApplicationConfig;
 import com.alibaba.dubbo.rpc.config.RegistryConfig;
 import com.alibaba.dubbo.rpc.config.ProviderConfig;
@@ -48,8 +46,9 @@ service.setVersion("1.0.0");
 service.export();
 ```
 
-#### (2). 服务消费者
-``` java
+## 服务消费者
+
+```java
 import com.alibaba.dubbo.rpc.config.ApplicationConfig;
 import com.alibaba.dubbo.rpc.config.RegistryConfig;
 import com.alibaba.dubbo.rpc.config.ConsumerConfig;
@@ -79,11 +78,13 @@ reference.setVersion("1.0.0");
 XxxService xxxService = reference.get(); // 注意：此代理对象内部封装了所有通讯细节，对象较重，请缓存复用
 ```
 
-#### (3). 特殊场景
-> 注：下面只列出不同的地方，其它参见上面的写法
+## 特殊场景
 
-##### (3.1). 方法级设置
-``` java
+下面只列出不同的地方，其它参见上面的写法
+
+### 方法级设置
+
+```java
 ...
  
 // 方法级配置
@@ -102,8 +103,9 @@ reference.setMethods(methods); // 设置方法级配置
 ...
 ```
 
-##### (3.2). 点对点直连
-``` java
+### 点对点直连
+
+```java
 
 ...
  
@@ -115,3 +117,5 @@ reference.setUrl("dubbo://10.20.130.230:20880/com.xxx.XxxService");
  
 ...
 ```
+
+[^1]: API使用范围说明：API 仅用于 OpenAPI, ESB, Test, Mock 等系统集成，普通服务提供方或消费方，请采用[XML 配置](../configuration/xml.md)方式使用 Dubbo

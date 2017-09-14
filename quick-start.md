@@ -5,9 +5,9 @@ Dubbo 采用全 Spring 配置方式，透明化接入应用，对应用没有任
 
 如果不想使用 Spring 配置，可以通过 [API 的方式](../configuration/api.md) 进行调用。
 
-#### 服务提供者 [^1]
+## 服务提供者 [^1]
 
-##### 定义服务接口 [^2]
+### 定义服务接口 [^2]
 
 > DemoService.java
 
@@ -19,7 +19,7 @@ public interface DemoService {
 }
 ```
 
-##### 在服务提供方实现接口 [^3]
+### 在服务提供方实现接口 [^3]
 
 > DemoServiceImpl.java
 
@@ -36,7 +36,7 @@ public class DemoServiceImpl implements DemoService {
 }
 ```
 
-##### 用 Spring 配置声明暴露服务 
+### 用 Spring 配置声明暴露服务 
 
 > provider.xml
 
@@ -64,7 +64,7 @@ public class DemoServiceImpl implements DemoService {
 </beans>
 ```
 
-##### 加载 Spring 配置 
+### 加载 Spring 配置 
 
 > Provider.java
 
@@ -80,9 +80,9 @@ public class Provider {
 }
 ```
 
-#### 服务消费者 [^4]
+## 服务消费者 [^4]
 
-##### 通过 Spring 配置引用远程服务
+### 通过 Spring 配置引用远程服务
 
 > consumer.xml
 
@@ -104,9 +104,9 @@ public class Provider {
 </beans>
 ```
 
-##### 加载Spring配置，并调用远程服务
+### 加载Spring配置，并调用远程服务
 
-**Consumer.java** [^5]
+> Consumer.java [^5]
 
 ```java
 import org.springframework.context.support.ClassPathXmlApplicationContext;

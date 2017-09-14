@@ -1,18 +1,18 @@
-bui# Summary
-* 入门
+# Summary
+* [入门](./preface/index.md)
     * [背景](./preface/background.md)
     * [需求](./preface/requirements.md)
     * [架构](./preface/architecture.md)
     * [用法](./preface/usage.md)
-* [快速启动](./preface/quick-start.md)
+* [快速启动](./quick-start.md)
 * [依赖](./dependencies.md)
 * [成熟度](./maturity.md)
-* 配置
-    * [XML配置](./configuration/xml.md)
+* [配置](./configuration/index.md)
+    * [XML 配置](./configuration/xml.md)
     * [属性配置](./configuration/properties.md)
-    * [API配置](./configuration/api.md)
+    * [API 配置](./configuration/api.md)
     * [注解配置](./configuration/annotation.md)
-* 示例
+* [示例](./demos/index.md)
     * [启动时检查](./demos/preflight-check.md)
     * [集群容错](./demos/fault-tolerent-strategy.md)
     * [负载均衡](./demos/loadbalance.md)
