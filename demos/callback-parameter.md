@@ -1,14 +1,10 @@
-> ![warning](../sources/images/check.gif)参数回调方式与调用本地callback或listener相同，只需要在Spring的配置文件中声明哪个参数是callback类型即可，Dubbo将基于长连接生成反向代理，这样就可以从服务器端调用客户端逻辑。
+# 参数回调
 
-> ![warning](../sources/images/warning-3.gif)2.0.6及其以上版本支持  
+参数回调方式与调用本地 callback 或 listener 相同，只需要在 Spring 的配置文件中声明哪个参数是 callback 类型即可。Dubbo 将基于长连接生成反向代理，这样就可以从服务器端调用客户端逻辑 [^1]。可以参考 [dubbo 项目中的示例代码](https://github.com/alibaba/dubbo/tree/master/dubbo-test/dubbo-test-examples/src/main/java/com/alibaba/dubbo/examples/callback)。
 
-> 代码参见：https://github.com/alibaba/dubbo/tree/master/dubbo-test/dubbo-test-examples/src/main/java/com/alibaba/dubbo/examples/callback
+#### 服务接口示例
 
-##### (1) 共享服务接口
-
-服务接口示例
-
-**CallbackService.java**
+###### CallbackService.java
 
 ```java
 package com.callback;
@@ -18,7 +14,7 @@ public interface CallbackService {
 }
 ```
 
-**CallbackListener.java**
+###### CallbackListener.java
 
 ```java
 package com.callback;
@@ -28,11 +24,7 @@ public interface CallbackListener {
 }
 ```
 
-##### (2) 服务提供者
-
-服务提供者接口实现示例
-
-**CallbackServiceImpl.java**
+#### 服务提供者接口实现示例
 
 ```java
 package com.callback.impl;
@@ -83,7 +75,7 @@ public class CallbackServiceImpl implements CallbackService {
 }
 ```
 
-服务提供者配置示例
+#### 服务提供者配置示例
 
 ```xml
 <bean id="callbackService" class="com.callback.impl.CallbackServiceImpl" />
@@ -96,19 +88,13 @@ public class CallbackServiceImpl implements CallbackService {
 </dubbo:service>
 ```
 
-##### (3) 服务消费者
-
-服务消费者配置示例
-
-**consumer.xml**
+#### 服务消费者配置示例
 
 ```xml
 <dubbo:reference id="callbackService" interface="com.callback.CallbackService" />
 ```
 
-服务消费者调用示例
-
-**CallbackServiceTest.java**
+#### 服务消费者调用示例
 
 ```java
 ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:consumer.xml");
@@ -122,3 +108,5 @@ callbackService.addListener("http://10.20.160.198/wiki/display/dubbo/foo.bar", n
     }
 });
 ```
+
+[^1]: `2.0.6` 及其以上版本支持
