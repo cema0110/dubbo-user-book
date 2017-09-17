@@ -1,28 +1,23 @@
-> ![warning](../sources/images/warning-3.gif)2.2.1以上版本支持 
+# 日志适配
 
-> ![warning](../sources/images/check.gif)扩展点：[日志适配扩展](http://dubbo.io/developer-guide/SPI%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C/%E6%97%A5%E5%BF%97%E9%80%82%E9%85%8D%E6%89%A9%E5%B1%95.html)
+自 `2.2.1` 开始，dubbo 开始内置 log4j、slf4j、jcl、jdk 这些日志框架的适配 [^1]，也可以通过以下方式显示配置日志输出策略：
 
-缺省自动查找：
+0. 命令行
 
-* log4j
-* slf4j
-* jcl
-* jdk
-
-可以通过以下方式配置日志输出策略
-
-```sh
+    ```sh
 java -Ddubbo.application.logger=log4j
 ```
 
-**dubbo.properties**
+0. 在 `dubbo.properties` 中指定
 
-```
+    ```
 dubbo.application.logger=log4j
 ```
 
-**dubbo.xml**
+0. 在 `dubbo.xml` 中配置
 
-```xml
+    ```xml
 <dubbo:application logger="log4j" />
 ```
+
+[^1]: 自定义扩展可以参考[日志适配扩展](https://dubbo.gitbooks.io/dubbo-dev-book/content/impls/logger-adapter.html)
