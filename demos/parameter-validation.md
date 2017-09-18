@@ -1,13 +1,27 @@
-> ![warning](../sources/images/check.gif)参数验证功能是基于 [JSR303](https://jcp.org/en/jsr/detail?id=303) 实现的，用户只需标识JSR303标准的验证Annotation，并通过声明filter来实现验证。  
+# 参数验证
 
-> ![warning](../sources/images/warning-3.gif)2.1.0以上版本支持, 完整示例代码参见：https://github.com/alibaba/dubbo/tree/master/dubbo-test/dubbo-test-examples/src/main/java/com/alibaba/dubbo/examples/validation  
+参数验证功能 [^1] 是基于 [JSR303](https://jcp.org/en/jsr/detail?id=303) 实现的，用户只需标识 JSR303 标准的验证 annotation，并通过声明 filter 来实现验证 [^2]。
 
-验证方式可扩展，参见：[验证扩展](http://dubbo.io/developer-guide/SPI%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C/%E9%AA%8C%E8%AF%81%E6%89%A9%E5%B1%95.html)
+## Maven 依赖
 
-##### 参数标注示例
+```xml
+<dependency>
+    <groupId>javax.validation</groupId>
+    <artifactId>validation-api</artifactId>
+    <version>1.0.0.GA</version>
+</dependency>
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-validator</artifactId>
+    <version>4.2.0.Final</version>
+</dependency>
+```
+
+## 示例
+
+### 参数标注示例
 
 ```java
-
 import java.io.Serializable;
 import java.util.Date;
  
@@ -20,7 +34,6 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
  
 public class ValidationParameter implements Serializable {
-     
     private static final long serialVersionUID = 7158911668568000392L;
  
     @NotNull // 不允许为空
@@ -80,28 +93,25 @@ public class ValidationParameter implements Serializable {
     public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
     }
- 
 }
 ```
 
-##### 分组验证示例
+### 分组验证示例
 
 ```java
-public interface ValidationService { // 缺省可按服务接口区分验证场景，如：@NotNull(groups = ValidationService.class)
-     
+public interface ValidationService { // 缺省可按服务接口区分验证场景，如：@NotNull(groups = ValidationService.class)   
     @interface Save{} // 与方法同名接口，首字母大写，用于区分验证场景，如：@NotNull(groups = ValidationService.Save.class)，可选
     void save(ValidationParameter parameter);
     void update(ValidationParameter parameter);
 }
 ```
 
-##### 关联验证示例
+### 关联验证示例
 
 ```java
 import javax.validation.GroupSequence;
  
-public interface ValidationService {
-     
+public interface ValidationService {   
     @GroupSequence(Update.class) // 同时验证Update组规则
     @interface Save{}
     void save(ValidationParameter parameter);
@@ -111,33 +121,33 @@ public interface ValidationService {
 }
 ```
 
-##### 参数验证示例
+### 参数验证示例
 
 ```java
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
  
 public interface ValidationService {
- 
     void save(@NotNull ValidationParameter parameter); // 验证参数不为空
- 
     void delete(@Min(1) int id); // 直接对基本类型参数验证
 }
 ```
 
-##### 在客户端验证参数
+## 配置
+
+### 在客户端验证参数
 
 ```xml
 <dubbo:reference id="validationService" interface="com.alibaba.dubbo.examples.validation.api.ValidationService" validation="true" />
 ```
 
-##### 在服务器端验证参数
+### 在服务器端验证参数
 
 ```xml
 <dubbo:service interface="com.alibaba.dubbo.examples.validation.api.ValidationService" ref="validationService" validation="true" />
 ```
 
-##### 验证异常信息
+## 验证异常信息
 
 ```java
 import javax.validation.ConstraintViolationException;
@@ -149,8 +159,7 @@ import com.alibaba.dubbo.examples.validation.api.ValidationParameter;
 import com.alibaba.dubbo.examples.validation.api.ValidationService;
 import com.alibaba.dubbo.rpc.RpcException;
  
-public class ValidationConsumer {
-     
+public class ValidationConsumer {   
     public static void main(String[] args) throws Exception {
         String config = ValidationConsumer.class.getPackage().getName().replace('.', '/') + "/validation-consumer.xml";
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(config);
@@ -170,17 +179,5 @@ public class ValidationConsumer {
 }
 ```
 
-##### 需要加入依赖
-
-```xml
-<dependency>
-    <groupId>javax.validation</groupId>
-    <artifactId>validation-api</artifactId>
-    <version>1.0.0.GA</version>
-</dependency>
-<dependency>
-    <groupId>org.hibernate</groupId>
-    <artifactId>hibernate-validator</artifactId>
-    <version>4.2.0.Final</version>
-</dependency>
-```
+[^1]: 自 `2.1.0` 版本开始支持, 如何使用可以参考 [dubbo 项目中的示例代码](https://github.com/alibaba/dubbo/tree/master/dubbo-test/dubbo-test-examples/src/main/java/com/alibaba/dubbo/examples/validation)
+[^2]: 验证方式可扩展，扩展方式参见开发者手册中的[验证扩展](https://dubbo.gitbooks.io/dubbo-dev-book/content/impls/validation.html)
