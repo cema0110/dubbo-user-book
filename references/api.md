@@ -1,10 +1,10 @@
-> ![check](../sources/images/check.gif) Dubbo的常规功能，都保持零侵入，但有些功能不得不用API侵入才能实现。  
+# API 参考手册
 
-> ![warning](../sources/images/warning-3.gif) Dubbo中除这里声明以外的接口或类，都是内部接口或扩展接口，普通用户请不要直接依赖，否则升级版本可能出现不兼容。
+Dubbo 的常规功能，都保持零侵入，但有些功能不得不用 API 侵入才能实现 [^1]。  
 
-API汇总如下：  
+API 汇总如下：  
 
-#### 配置API
+## 配置 API
 
 ```
 com.alibaba.dubbo.config.ServiceConfig
@@ -21,7 +21,7 @@ com.alibaba.dubbo.config.ArgumentConfig
 ```
 详细参见：[API配置](../configuration/api.md)  
 
-#### 注解API
+## 注解 API
 
 ```
 com.alibaba.dubbo.config.annotation.Service
@@ -30,24 +30,33 @@ com.alibaba.dubbo.config.annotation.Reference
 
 详细参见：[注解配置](../configuration/annotation.md)
 
-#### 模型API
+## 模型 API
+
 ```
 com.alibaba.dubbo.common.URL
 com.alibaba.dubbo.rpc.RpcException
 ```
-#### 上下文API
+
+## 上下文 API
+
 ```
 com.alibaba.dubbo.rpc.RpcContext
 ```
 
-详细参见：[上下文信息](../demos/上下文信息.md) & 对方地址 & [隐式传参](../demos/隐式传参.md) & [异步调用](../demos/异步调用.md)
-#### 服务API
+详细参见：[上下文信息](../demos/context.md) & [隐式传参](../demos/attachment.md) & [异步调用](../demos/async-call.md)
+
+## 服务API
+
 ```
 com.alibaba.dubbo.rpc.service.GenericService
 com.alibaba.dubbo.rpc.service.GenericException
 ```
-详细参见：[泛化引用](../demos/泛化引用.md) & [泛化实现](../demos/泛化实现.md)
+
+详细参见：[泛化引用](../demos/generic-reference.md) & [泛化实现](../demos/generic-service.md)
+
 ```
 com.alibaba.dubbo.rpc.service.EchoService
 ```
-详细参见：[回声测试](../demos/回声测试.md)
+详细参见：[回声测试](../demos/echo-service.md)
+
+[^1]: 注意：Dubbo 中除这里声明以外的接口或类，都是内部接口或扩展接口，普通用户请不要直接依赖，否则升级版本可能出现不兼容。
