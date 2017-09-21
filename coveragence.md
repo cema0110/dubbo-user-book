@@ -1,6 +1,6 @@
-### 测试覆盖率报告
+# 测试覆盖率报告
 
-统计于 2012-02-03 (2.0.12)
+基于 `2.0.12` 版本，统计于 2012-02-03
 
 ![/sources/images/code-quality1.jpg](sources/images/code-quality1.jpg)
 

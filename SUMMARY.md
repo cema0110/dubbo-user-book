@@ -88,6 +88,5 @@
 * [服务化最佳实践](./best-practice.md)
 * [推荐用法](./recommend.md)
 * [容量规划](./capacity-plan.md)
-* [基准测试工具包](./benchmark.md)
 * [性能测试报告](./perf-test.md)
 * [测试覆盖率报告](./coveragence.md)
