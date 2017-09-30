@@ -5,11 +5,13 @@ Dubbo 采用全 Spring 配置方式，透明化接入应用，对应用没有任
 
 如果不想使用 Spring 配置，可以通过 [API 的方式](../configuration/api.md) 进行调用。
 
-## 服务提供者 [^1]
+## 服务提供者
 
-### 定义服务接口 [^2]
+完整安装步骤，请参见：[示例提供者安装](https://dubbo.gitbooks.io/dubbo-admin-book/install/provider-demo.html)
 
-> DemoService.java
+### 定义服务接口
+
+DemoService.java [^1]：
 
 ```java
 package com.alibaba.dubbo.demo;
@@ -19,9 +21,9 @@ public interface DemoService {
 }
 ```
 
-### 在服务提供方实现接口 [^3]
+### 在服务提供方实现接口
 
-> DemoServiceImpl.java
+DemoServiceImpl.java [^2]：
 
 ```java
 
@@ -38,7 +40,7 @@ public class DemoServiceImpl implements DemoService {
 
 ### 用 Spring 配置声明暴露服务 
 
-> provider.xml
+provider.xml：
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -66,7 +68,7 @@ public class DemoServiceImpl implements DemoService {
 
 ### 加载 Spring 配置 
 
-> Provider.java
+Provider.java：
 
 ```java
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -80,11 +82,13 @@ public class Provider {
 }
 ```
 
-## 服务消费者 [^4]
+## 服务消费者
+
+完整安装步骤，请参见：[示例消费者安装](https://dubbo.gitbooks.io/dubbo-admin-book/install/consumer-demo.html)
 
 ### 通过 Spring 配置引用远程服务
 
-> consumer.xml
+consumer.xml：
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -106,7 +110,7 @@ public class Provider {
 
 ### 加载Spring配置，并调用远程服务
 
-> Consumer.java [^5]
+Consumer.java [^3]：
 
 ```java
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -123,8 +127,7 @@ public class Consumer {
 }
 ```
 
-[^1]: 完整安装步骤，请参见：[示例提供者安装](https://dubbo.gitbooks.io/dubbo-admin-book/install/provider-demo.html)
-[^2]: 该接口需单独打包，在服务提供方和消费方共享
-[^3]: 对服务消费方隐藏实现
-[^4]: 完整安装步骤，请参见：[示例消费者安装](https://dubbo.gitbooks.io/dubbo-admin-book/install/consumer-demo.html)
-[^5]: 也可以使用 IoC 注入
+
+[^1]: 该接口需单独打包，在服务提供方和消费方共享
+[^2]: 对服务消费方隐藏实现
+[^3]: 也可以使用 IoC 注入
