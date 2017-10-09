@@ -1,15 +1,6 @@
 # 实现泛化调用
 
-泛化接口调用方式主要用于客户端没有 API 接口及模型类元的情况，参数及返回值中的所有 POJO 均用 `Map` 表示，通常用于框架集成，比如：实现一个通用的服务测试框架，可通过 `GenericService` 调用所有服务实现。
-
-## 通过 Spring 实现泛化调用
-
-在 Spring 配置申明服务的实现：
-
-```xml
-<bean id="genericService" class="com.foo.MyGenericService" />
-<dubbo:service interface="com.foo.BarService" ref="genericService" />
-```
+泛接口实现方式主要用于服务器端没有API接口及模型类元的情况，参数及返回值中的所有POJO均用Map表示，通常用于框架集成，比如：实现一个通用的远程服务Mock框架，可通过实现GenericService接口处理所有服务请求。
 
 在 Java 代码中实现 `GenericService` 接口：
 
@@ -25,7 +16,16 @@ public class MyGenericService implements GenericService {
 }
 ```
 
-## 通过 API 方式实现泛化调用
+## 通过 Spring 暴露泛化实现
+
+在 Spring 配置申明服务的实现：
+
+```xml
+<bean id="genericService" class="com.foo.MyGenericService" />
+<dubbo:service interface="com.foo.BarService" ref="genericService" />
+```
+
+## 通过 API 方式暴露泛化实现
 
 ```java
 ... 
