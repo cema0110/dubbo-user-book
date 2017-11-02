@@ -18,13 +18,12 @@ Dubbo 是通过 JDK 的 ShutdownHook 来完成优雅停机的，所以如果用�
 
 设置优雅停机超时时间，缺省超时时间是 10 秒，如果超时则强制关闭。
 
-```xml
-<dubbo:application ...>
-    <dubbo:parameter key="shutdown.timeout" value="60000" /> <!-- 单位毫秒 -->
-</dubbo:application>
+```properties
+# dubbo.properties
+dubbo.service.shutdown.wait=15000
 ```
 
-如果 ShutdownHook 不能生效，可以自行调用：
+如果 ShutdownHook 不能生效，可以自行调用，**使用tomcat等容器部署的場景，建议通过扩展ContextListener等自行调用以下代码实现优雅停机**：
 
 ```java
 ProtocolConfig.destroyAll();

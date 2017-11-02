@@ -5,4 +5,14 @@
 * 导出路径，user.home标识的用户主目录
 * 导出间隔，最短间隔允许每隔10分钟导出一次
 
-> 自定义导出文件路径，暂未开放配置
+指定导出路径：
+```properties
+# dubbo.properties
+dubbo.application.dump.directory=/tmp
+```
+
+```xml
+<dubbo:application ...>
+    <dubbo:parameter key="dump.directory" value="/tmp" />
+</dubbo:application>
+```
