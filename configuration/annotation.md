@@ -104,3 +104,13 @@ public class ConsumerTestApp {
     // ...
 }
 ``` 
+
+## 注意
+
+如果你曾使用旧版annotation配置，请删除所有相关配置，我们将在下个版本删除所有旧版配置项。
+
+```xml
+<dubbo:annotation package="com.alibaba.dubbo.test.service" /> 
+```
+
+
