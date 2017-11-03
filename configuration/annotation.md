@@ -1,72 +1,106 @@
 # 注解配置
 
-需要 `2.2.1` 以上版本支持  
+需要 `2.5.7` 及以上版本支持  
 
 ## 服务提供方
 
-### 注解
+### `Service`注解暴露服务
 
 ```java
 import com.alibaba.dubbo.config.annotation.Service;
  
-@Service(version="1.0.0")
-public class FooServiceImpl implements FooService { 
+@Service(timeout = 5000)
+public class AnnotateServiceImpl implements AnnotateService { 
     // ...
 }
 ```
     
-### XML 配置
+### javaconfig形式配置公共模块
 
-``` xml
-<!-- 公共信息，也可以用dubbo.properties配置 -->
-<dubbo:application name="annotation-provider" />
-<dubbo:registry address="127.0.0.1:4548" />
- 
-<!-- 扫描注解包路径，多个包用逗号分隔，不填pacakge表示扫描当前ApplicationContext中所有的类 -->
-<dubbo:annotation package="com.foo.bar.service" />
-```
+```java
+@Configuration
+public class DubboConfiguration {
 
-## 服务消费方
+    @Bean
+    public ApplicationConfig applicationConfig() {
+        ApplicationConfig applicationConfig = new ApplicationConfig();
+        applicationConfig.setName("provider-test");
+        return applicationConfig;
+    }
 
-### 注解
-
-``` java
-import com.alibaba.dubbo.config.annotation.Reference;
-import org.springframework.stereotype.Component;
- 
-@Component
-public class BarAction { 
-    @Reference(version="1.0.0")
-    private FooService fooService;
+    @Bean
+    public RegistryConfig registryConfig() {
+        RegistryConfig registryConfig = new RegistryConfig();
+        registryConfig.setAddress("zookeeper://127.0.0.1:2181");
+        registryConfig.setClient("curator");
+        return registryConfig;
+    }
 }
 ```
 
-### XML 配置
+### 指定dubbo扫描路径
 
-``` xml
-<!-- 公共信息，也可以用dubbo.properties配置 -->
-<dubbo:application name="annotation-consumer" />
-<dubbo:registry address="127.0.0.1:4548" />
- 
-<!-- 扫描注解包路径，多个包用逗号分隔，不填pacakge表示扫描当前ApplicationContext中所有的类 -->
-<dubbo:annotation package="com.foo.bar.action" />
+```java
+@SpringBootApplication
+@DubboComponentScan(basePackages = "com.alibaba.dubbo.test.service.impl")
+public class ProviderTestApp {
+    // ...
+}
 ```
 
-## 关于 XML 配置的一些说明
 
-也可以使用以下的 XML 配置完成 annotation 扫描，与前面的 `<dubbo:annotation package="..." />` 等价
+## 服务消费方
 
-``` xml
-<dubbo:annotation />
-<context:component-scan base-package="com.foo.bar.service">
-    <context:include-filter type="annotation" expression="com.alibaba.dubbo.config.annotation.Service" />
-</context:component-scan>
+### `Reference`注解引用服务
+
+```java
+public class AnnotationConsumeService {
+
+    @com.alibaba.dubbo.config.annotation.Reference
+    public AnnotateService annotateService;
+    
+    // ...
+}
+
 ```
 
-Spring 2.5 及以后版本支持 `<component-scan>`，对于 Spring 2.0 及以前版本，需要按照下面的方式配置：
+    
+### javaconfig形式配置公共模块
 
-``` xml 
-<!-- Spring2.0支持@Service注解配置，但不支持package属性自动加载bean的实例，需人工定义bean的实例。-->
-<dubbo:annotation />
-<bean id="barService" class="com.foo.BarServiceImpl" /> 
+```java
+@Configuration
+public class DubboConfiguration {
+
+    @Bean
+    public ApplicationConfig applicationConfig() {
+        ApplicationConfig applicationConfig = new ApplicationConfig();
+        applicationConfig.setName("consumer-test");
+        return applicationConfig;
+    }
+
+    @Bean
+    public ConsumerConfig consumerConfig() {
+        ConsumerConfig consumerConfig = new ConsumerConfig();
+        consumerConfig.setTimeout(3000);
+        return consumerConfig;
+    }
+
+    @Bean
+    public RegistryConfig registryConfig() {
+        RegistryConfig registryConfig = new RegistryConfig();
+        registryConfig.setAddress("zookeeper://127.0.0.1:2181");
+        registryConfig.setClient("curator");
+        return registryConfig;
+    }
+}
 ```
+
+### 指定dubbo扫描路径
+
+```java
+@SpringBootApplication
+@DubboComponentScan(basePackages = "com.alibaba.dubbo.test.service")
+public class ConsumerTestApp {
+    // ...
+}
+``` 
