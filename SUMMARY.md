@@ -86,9 +86,12 @@
     * [10.3 Redis 注册中心](./references/registry/redis.md)
     * [10.4 Simple 注册中心](./references/registry/simple.md)
 * [11 telnet 命令参考手册](./references/telnet.md)
-* [12 maven 插件参考手册](./references/maven.md)
-* [13 服务化最佳实践](./best-practice.md)
-* [14 推荐用法](./recommend.md)
-* [15 容量规划](./capacity-plan.md)
-* [16 性能测试报告](./perf-test.md)
-* [17 测试覆盖率报告](./coveragence.md)
+* [12 在线运维命令-QOS](./references/qos.md)
+* [13 maven 插件参考手册](./references/maven.md)
+* [14 服务化最佳实践](./best-practice.md)
+* [15 推荐用法](./recommend.md)
+* [16 容量规划](./capacity-plan.md)
+* [17 性能测试报告](./perf-test.md)
+* [18 测试覆盖率报告](./coveragence.md)
+
+
