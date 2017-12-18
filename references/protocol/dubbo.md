@@ -81,7 +81,8 @@ Dubbo 缺省协议采用单一长连接和 NIO 异步通讯，适合于小数据
 Dubbo 协议缺省每服务每提供者每消费者使用单一长连接，如果数据量较大，可以使用多个连接。
 
 ```xml
-<dubbo:protocol name="dubbo" connections="2" />
+<dubbo:service connections="1"/>
+<dubbo:reference connections="1"/>
 ```
 
 * `<dubbo:service connections="0">` 或 `<dubbo:reference connections="0">` 表示该服务使用 JVM 共享长连接。**缺省**
